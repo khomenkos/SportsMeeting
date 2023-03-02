@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1024836925856-c5i0blk32qrmitpbk5si1rb37hoolfob.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1024836925856-c5i0blk32qrmitpbk5si1rb37hoolfob</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBCKHOLZqrvNj9DTHiC627j9ep8gIULGJk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1024836925856</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.khomenKO.SportsMeeting</string>
+	<key>PROJECT_ID</key>
+	<string>sportsmeeting-9c9ce</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sportsmeeting-9c9ce.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1024836925856:ios:0a964bd623d4853f958cc5</string>
+	<key>DATABASE_URL</key>
+	<string>https://sportsmeeting-9c9ce-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
