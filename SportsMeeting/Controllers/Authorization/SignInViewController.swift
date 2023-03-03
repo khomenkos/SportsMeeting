@@ -8,7 +8,8 @@
 import UIKit
 
 class SignInViewController: UIViewController {
-    
+    var activeTextField : UITextField? = nil
+
     // MARK: Outlets
     
     // Label
@@ -176,6 +177,7 @@ class SignInViewController: UIViewController {
         setupViews()
         emailTextField.delegate = self
         passwordTextField.delegate = self
+        setupKeyboard()
     }
     
     // MARK: Actions
@@ -213,6 +215,19 @@ class SignInViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    // MARK: Setting Keyboard
+    
+    private func setupKeyboard() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundTap))
+        view.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func backgroundTap(_ sender: UITapGestureRecognizer) {
+        // go through all of the textfield inside the view, and end editing thus resigning first responder
+        // ie. it will trigger a keyboardWillHide notification
+        self.view.endEditing(true)
     }
     
     // MARK: Constraints
@@ -282,4 +297,13 @@ extension SignInViewController: UITextFieldDelegate {
         }
         return true
     }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.activeTextField = textField
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.activeTextField = nil
+    }
 }
+
+

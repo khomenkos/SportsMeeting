@@ -23,7 +23,7 @@ final class TabBarViewController: UITabBarController {
 
         homeVC.navigationItem.largeTitleDisplayMode = .automatic
         chatVC.navigationItem.largeTitleDisplayMode = .automatic
-        addEventsVC.navigationItem.largeTitleDisplayMode = .automatic
+        addEventsVC.navigationItem.largeTitleDisplayMode = .never
         allEventsVC.navigationItem.largeTitleDisplayMode = .automatic
         accountVC.navigationItem.largeTitleDisplayMode = .automatic
 

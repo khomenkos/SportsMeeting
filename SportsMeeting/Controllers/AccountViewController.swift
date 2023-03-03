@@ -225,14 +225,13 @@ class AccountViewController: UIViewController {
     }
             
     func loadData() {
-        guard let email = Auth.auth().currentUser?.email else {
+        guard let uid = Auth.auth().currentUser?.uid else {
             print("User not logged in")
             return
         }
         
-        DatabaseManager.shared.getUserData(email: email) { (userData, error) in
+        DatabaseManager.shared.getUserData(uid: uid) { (userData, error) in
             if let error = error {
-                
                 print("Error loading user data: \(error.localizedDescription)")
                 return
             }

@@ -5,7 +5,7 @@
 //  Created by  Sasha Khomenko on 01.03.2023.
 //
 
-import FirebaseDatabase
+import Firebase
 
 public class DatabaseManager {
     
@@ -27,7 +27,8 @@ public class DatabaseManager {
     }
     
     // Inserts new user data to database
-    public func insertNewUser(firstName: String,
+    public func insertNewUser(uid: String,
+                              firstName: String,
                               lastName: String,
                               dayOfBirth: String,
                               gender: String,
@@ -35,7 +36,6 @@ public class DatabaseManager {
                               email: String,
                               completion: @escaping (Bool) -> Void) {
         
-        let key = email.safeDatabaseKey()
         let userData = ["firstName": firstName,
                         "lastName": lastName,
                         "phoneNumber": phoneNumber,
@@ -43,7 +43,7 @@ public class DatabaseManager {
                         "gender": gender,
                         "dayOfBirth": dayOfBirth] as [String : Any]
         
-        database.child(key).setValue(userData) { error, _ in
+        database.child("users").child(uid).setValue(userData) { error, _ in
             if error == nil {
                 // Succeeded
                 completion(true)
@@ -56,9 +56,39 @@ public class DatabaseManager {
         }
     }
     
-    func getUserData(email: String, completion: @escaping ([String: Any]?, Error?) -> Void) {
-        let key = email.safeDatabaseKey()
-        database.child(key).observeSingleEvent(of: .value) { (snapshot) in
+    public func insertNewEvent(nameEvent: String,
+                               location: String,
+                               dateTime: String,
+                               sportType:String,
+                               comment: String,
+                               completion: @escaping (Bool) -> Void) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let userData = ["uid": uid,
+                        "nameEvent": nameEvent,
+                        "location": location,
+                        "dateTime": dateTime,
+                        "sportType": sportType,
+                        "comment": comment] as [String : Any]
+        let ref = database.child("events").childByAutoId()
+
+        ref.setValue(userData) { error, _ in
+            if error == nil {
+                // Succeeded
+                guard let tweetID = ref.key else { return }
+                self.database.child("user-tweets").child(uid).setValue([tweetID: 1])
+                completion(true)
+                return
+            } else {
+                // Failed
+                completion(false)
+                return
+            }
+        }
+    }
+    
+    func getUserData(uid: String, completion: @escaping ([String: Any]?, Error?) -> Void) {
+        database.child("users").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             if let userData = snapshot.value as? [String: Any] {
                 completion(userData, nil)
             } else {

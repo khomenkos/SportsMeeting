@@ -367,6 +367,7 @@ class SignUpViewController: UIViewController {
         setupScrollView()
         setupViews()
         setupKeyboard()
+        
     }
     
     // MARK: Actions
@@ -473,6 +474,8 @@ class SignUpViewController: UIViewController {
     
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        // Hide keyboard while scrolling
+        scrollView.keyboardDismissMode = .onDrag
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(scrollView)

@@ -41,9 +41,11 @@ public class AuthManager {
                         completion(false)
                         return
                     }
+                    guard let uid = result?.user.uid else { return }
                     
                     // Insert into database
-                    DatabaseManager.shared.insertNewUser(firstName: firstName,
+                    DatabaseManager.shared.insertNewUser(uid: uid,
+                                                         firstName: firstName,
                                                          lastName: lastName,
                                                          dayOfBirth: dayOfBirth,
                                                          gender: gender,
