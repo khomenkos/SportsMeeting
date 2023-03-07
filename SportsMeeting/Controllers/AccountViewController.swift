@@ -10,6 +10,10 @@ import Firebase
 
 class AccountViewController: UIViewController {
     
+    private var user: User? {
+        didSet { configure() }
+    }
+    
     private let image: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "manImage")
@@ -218,10 +222,17 @@ class AccountViewController: UIViewController {
         title = "My Account"
         view.backgroundColor = .systemBackground
         setupBarItem()
-        
         setupViews()
-        
         loadData()
+    }
+    
+    private func configure() {
+        guard let user = user else { return }
+        firstNameTitle.text = user.firstName
+        lastNameTitle.text = user.lastName
+        dayOfBirthTitle.text = user.dayOfBirth
+        genderTitle.text = user.gender
+        phoneTitle.text = user.phoneNumber
     }
             
     func loadData() {
@@ -230,20 +241,8 @@ class AccountViewController: UIViewController {
             return
         }
         
-        DatabaseManager.shared.getUserData(uid: uid) { (userData, error) in
-            if let error = error {
-                print("Error loading user data: \(error.localizedDescription)")
-                return
-            }
-            guard let userData = userData else {
-                print("User data not found")
-                return
-            }
-            self.firstNameTitle.text = userData["firstName"] as? String
-            self.lastNameTitle.text = userData["lastName"] as? String
-            self.dayOfBirthTitle.text = userData["dayOfBirth"] as? String
-            self.genderTitle.text = userData["gender"] as? String
-            self.phoneTitle.text = userData["phoneNumber"] as? String
+        DatabaseManager.shared.fetchUser(uid: uid) { user in
+            self.user = user
         }
     }
                 
@@ -329,6 +328,5 @@ class AccountViewController: UIViewController {
             genderTitle.heightAnchor.constraint(equalToConstant: 50),
             phoneTitle.heightAnchor.constraint(equalToConstant: 50),
         ])
-
     }
 }

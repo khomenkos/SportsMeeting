@@ -11,7 +11,7 @@ struct Event {
     let nameEvent: String
     let eventID: String
     var location: String
-    var dateTime: Date!
+    var dateTime: String
     let sportType: String
     let user: User
     var comment: String
@@ -24,9 +24,6 @@ struct Event {
         self.location = dictionary["location"] as? String ?? ""
         self.sportType = dictionary["sportType"] as? String ?? ""
         self.comment = dictionary["comment"] as? String ?? ""
-        
-        if let dateTime = dictionary["dateTime"] as? Double {
-            self.dateTime = Date(timeIntervalSince1970: dateTime)
-        }
+        self.dateTime = dictionary["dateTime"] as? String ?? ""
     }
 }

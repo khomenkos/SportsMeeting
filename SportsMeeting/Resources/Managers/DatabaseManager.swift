@@ -87,15 +87,30 @@ public class DatabaseManager {
         }
     }
     
-    func getUserData(uid: String, completion: @escaping ([String: Any]?, Error?) -> Void) {
-        database.child("users").child(uid).observeSingleEvent(of: .value) { (snapshot) in
-            if let userData = snapshot.value as? [String: Any] {
-                completion(userData, nil)
-            } else {
-                completion(nil, nil)
+    func fetchUser(uid: String, completion: @escaping(User) -> Void) {
+        
+        database.child("users").child(uid).observeSingleEvent(of: .value) { snapshot in
+            guard let dictionary = snapshot.value as? [String: AnyObject] else { return }
+            
+            let user = User(uid: uid, dictionary: dictionary)
+            completion(user)
+        }
+        
+    }
+    
+    func fetchEvents(completion: @escaping([Event]) -> Void) {
+        var events = [Event]()
+        
+        database.child("events").observe(.childAdded) { snapshot in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            guard let uid = dictionary["uid"] as? String else { return }
+            let eventID = snapshot.key
+
+            self.fetchUser(uid: uid) { user in
+                let event = Event(user: user, eventID: eventID, dictionary: dictionary)
+                events.append(event)
+                completion(events)
             }
-        } withCancel: { (error) in
-            completion(nil, error)
         }
     }
 }

@@ -18,7 +18,7 @@ final class TabBarViewController: UITabBarController {
         let homeVC = HomeViewController()
         let chatVC = ChatViewController()
         let addEventsVC = AddEventViewController()
-        let allEventsVC = AllEventsViewController()
+        let allEventsVC = AllEventsViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let accountVC = AccountViewController()
 
         homeVC.navigationItem.largeTitleDisplayMode = .automatic

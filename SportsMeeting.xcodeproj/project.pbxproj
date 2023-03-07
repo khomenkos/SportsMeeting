@@ -22,6 +22,9 @@
 		E37494AF29ACF744000E2DF2 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37494AE29ACF744000E2DF2 /* SignInViewController.swift */; };
 		E37494B129ACF755000E2DF2 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37494B029ACF755000E2DF2 /* SignUpViewController.swift */; };
 		E37494B529AD64CC000E2DF2 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37494B429AD64CC000E2DF2 /* UIView+Extensions.swift */; };
+		E392000529B363B700CF9CC1 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E392000329B363B700CF9CC1 /* EventCell.swift */; };
+		E392000629B363B700CF9CC1 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E392000429B363B700CF9CC1 /* EventCell.xib */; };
+		E3A53AA529B733B900EAB1CF /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A53AA429B733B900EAB1CF /* EventViewModel.swift */; };
 		E3B93A2329ACC3D2001E3CAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B93A2229ACC3D2001E3CAB /* AppDelegate.swift */; };
 		E3B93A2529ACC3D2001E3CAB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B93A2429ACC3D2001E3CAB /* SceneDelegate.swift */; };
 		E3B93A2A29ACC3D2001E3CAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3B93A2829ACC3D2001E3CAB /* Main.storyboard */; };
@@ -47,6 +50,9 @@
 		E37494AE29ACF744000E2DF2 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		E37494B029ACF755000E2DF2 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E37494B429AD64CC000E2DF2 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		E392000329B363B700CF9CC1 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		E392000429B363B700CF9CC1 /* EventCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
+		E3A53AA429B733B900EAB1CF /* EventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		E3B93A1F29ACC3D2001E3CAB /* SportsMeeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SportsMeeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3B93A2229ACC3D2001E3CAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3B93A2429ACC3D2001E3CAB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +117,8 @@
 		E374949E29ACF29A000E2DF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E392000329B363B700CF9CC1 /* EventCell.swift */,
+				E392000429B363B700CF9CC1 /* EventCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -118,6 +126,7 @@
 		E374949F29ACF2A7000E2DF2 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E3A53AA429B733B900EAB1CF /* EventViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -257,6 +266,7 @@
 				E3B93A2F29ACC3D4001E3CAB /* LaunchScreen.storyboard in Resources */,
 				E31704B529AF780300AA556F /* GoogleService-Info.plist in Resources */,
 				E3B93A2C29ACC3D4001E3CAB /* Assets.xcassets in Resources */,
+				E392000629B363B700CF9CC1 /* EventCell.xib in Resources */,
 				E3B93A2A29ACC3D2001E3CAB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,6 +323,7 @@
 				E37494AF29ACF744000E2DF2 /* SignInViewController.swift in Sources */,
 				E31704A829AF58AB00AA556F /* AuthManager.swift in Sources */,
 				E31704AA29AF58BC00AA556F /* DatabaseManager.swift in Sources */,
+				E3A53AA529B733B900EAB1CF /* EventViewModel.swift in Sources */,
 				E37494A429ACF41C000E2DF2 /* HomeViewController.swift in Sources */,
 				E37494A229ACF382000E2DF2 /* TabBarViewController.swift in Sources */,
 				E3B93A2329ACC3D2001E3CAB /* AppDelegate.swift in Sources */,
@@ -322,6 +333,7 @@
 				E3607AAB29B2172100BEAAF0 /* User.swift in Sources */,
 				E37494AA29ACF479000E2DF2 /* AllEventsViewController.swift in Sources */,
 				E37494A629ACF43F000E2DF2 /* ChatViewController.swift in Sources */,
+				E392000529B363B700CF9CC1 /* EventCell.swift in Sources */,
 				E3B93A2529ACC3D2001E3CAB /* SceneDelegate.swift in Sources */,
 				E37494AC29ACF485000E2DF2 /* AccountViewController.swift in Sources */,
 				E37494B529AD64CC000E2DF2 /* UIView+Extensions.swift in Sources */,
