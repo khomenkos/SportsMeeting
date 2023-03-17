@@ -9,22 +9,20 @@ import UIKit
 
 class SignInViewController: UIViewController {
     var activeTextField : UITextField? = nil
-
+    
     // MARK: Outlets
     
-    // Label
+    // Labels
     private let loginImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "logo")
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     private let welcomeLabel: UILabel = {
         let label = UILabel()
         label.text = "Welcome Back!"
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "Gill Sans SemiBold", size: 33)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -34,7 +32,6 @@ class SignInViewController: UIViewController {
     private let adviceLabel: UILabel = {
         let label = UILabel()
         label.text = "Please enter your email address and enter password"
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "Gill Sans Light", size: 16)
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -42,59 +39,7 @@ class SignInViewController: UIViewController {
         return label
     }()
     
-    private let signUpLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Don't have an account?"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans Light", size: 18)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .lightGray
-        return label
-    }()
-    
-    // Stack
-    private let stackMain: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 20
-        return stackView
-    }()
-    
-    private let stackEmail: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
-    }()
-    
-    private let stackPassword: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
-    }()
-    
     // Buttons
-    private let stackSignUp: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 10
-        return stackView
-    }()
-    
     private lazy var forgotPassButton: UIButton = {
         let button = UIButton()
         button.setTitle("Forgot Password?", for: .normal)
@@ -118,66 +63,54 @@ class SignInViewController: UIViewController {
     }()
     
     private lazy var signUpButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Sign Up", for: .normal)
+        let button = Utilities().attributedButton("Don't have an account?", " Sign Up")
         button.addTarget(self, action: #selector(signUpBtn), for: .touchUpInside)
-        button.setTitleColor(.link, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Gill Sans SemiBold", size: 16)
-        
         return button
+    }()
+    
+    // Containers
+    private lazy var emailContainer: UIStackView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "mail")
+        imageView.setDimensions(width: 25, height: 40)
+        let stack = Utilities().imageContainerView(withImage: imageView, textField: emailTextField)
+        return stack
+    }()
+    
+    private lazy var passwordContainer: UIStackView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "lock.fill")
+        imageView.setDimensions(width: 25, height: 40)
+        let stack = Utilities().imageContainerView(withImage: imageView, textField: passwordTextField)
+        return stack
     }()
     
     // Text Field
     private lazy var emailTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Email"
-        textField.borderStyle = .roundedRect
+        let textField = Utilities().textField(withPlaceholder: "Email")
         textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
         textField.returnKeyType = .continue
-        textField.backgroundColor = .secondarySystemBackground
         return textField
     }()
     
     private lazy var passwordTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Password"
-        textField.borderStyle = .roundedRect
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .done
-        textField.backgroundColor = .secondarySystemBackground
+        let textField = Utilities().textField(withPlaceholder: "Password")
         textField.isSecureTextEntry = true
+        textField.autocapitalizationType = .none
+        textField.returnKeyType = .done
         return textField
-    }()
-    
-    private let emailIcon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "mail")
-        imageView.tintColor = .black
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    private let passwordIcon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "lock.fill")
-        imageView.tintColor = .black
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
     }()
     
     // MARK: VC Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
-        setupViews()
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        setupKeyboard()
+        setupUI()
+        hideKeyboard()
     }
     
     // MARK: Actions
@@ -205,105 +138,38 @@ class SignInViewController: UIViewController {
                     self.present(vc, animated: true)
                 } else {
                     // Error occurred
-                    let alert = UIAlertController(title: "Log In Error",
-                                                  message: "We were unable to log you in.",
-                                                  preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Dismiss",
-                                                  style: .cancel,
-                                                  handler: nil))
-                    self.present(alert, animated: true)
+                    self.showAlert(withTitle: "Log In Error", message: "We were unable to log you in.")
                 }
             }
         }
     }
     
-    // MARK: Setting Keyboard
-    
-    private func setupKeyboard() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundTap))
-        view.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    @objc func backgroundTap(_ sender: UITapGestureRecognizer) {
-        // go through all of the textfield inside the view, and end editing thus resigning first responder
-        // ie. it will trigger a keyboardWillHide notification
-        self.view.endEditing(true)
-    }
-    
     // MARK: Constraints
-    private func setupViews(){
-        view.addSubview(loginImageView)
+    private func setupUI(){
+        let stackMain = UIStackView(arrangedSubviews: [loginImageView, welcomeLabel, adviceLabel, emailContainer, passwordContainer, forgotPassButton, loginButton,  signUpButton])
+        stackMain.translatesAutoresizingMaskIntoConstraints = false
+        stackMain.axis = .vertical
+        stackMain.spacing = 15
+        
+        view.addSubview(stackMain)
         NSLayoutConstraint.activate([
-            loginImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            loginImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 16),
-            loginImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            loginImageView.topAnchor.constraint(equalTo: stackMain.topAnchor),
+            loginImageView.trailingAnchor.constraint(equalTo: stackMain.trailingAnchor, constant: 16),
+            loginImageView.leadingAnchor.constraint(equalTo: stackMain.leadingAnchor, constant: 16),
             loginImageView.heightAnchor.constraint(equalToConstant: 200)
         ])
         
-        view.addSubview(welcomeLabel)
         NSLayoutConstraint.activate([
-            welcomeLabel.topAnchor.constraint(equalTo: loginImageView.bottomAnchor, constant: 30),
-            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackMain.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stackMain.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            stackMain.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            stackMain.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40)
         ])
         
-        view.addSubview(adviceLabel)
         NSLayoutConstraint.activate([
-            adviceLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 10),
-            adviceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
-        
-        view.addSubview(stackMain)
-        
-        stackMain.addArrangedSubview(stackEmail)
-        stackEmail.addArrangedSubview(emailIcon)
-        stackEmail.addArrangedSubview(emailTextField)
-        
-        stackMain.addArrangedSubview(stackPassword)
-        stackPassword.addArrangedSubview(passwordIcon)
-        stackPassword.addArrangedSubview(passwordTextField)
-        
-        stackMain.addArrangedSubview(forgotPassButton)
-        stackMain.addArrangedSubview(loginButton)
-        
-        NSLayoutConstraint.activate([
-            stackMain.topAnchor.constraint(equalTo: adviceLabel.bottomAnchor, constant: 25),
-            stackMain.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            stackMain.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            
-            emailIcon.heightAnchor.constraint(equalToConstant: 50),
-            emailIcon.widthAnchor.constraint(equalToConstant: 25),
-            passwordIcon.heightAnchor.constraint(equalToConstant: 50),
-            passwordIcon.widthAnchor.constraint(equalToConstant: 25),
+            emailTextField.heightAnchor.constraint(equalToConstant: 40),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 40),
             loginButton.heightAnchor.constraint(equalToConstant: 50),
         ])
-        
-        view.addSubview(stackSignUp)
-        stackSignUp.addArrangedSubview(signUpLabel)
-        stackSignUp.addArrangedSubview(signUpButton)
-        
-        NSLayoutConstraint.activate([
-            stackSignUp.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackSignUp.topAnchor.constraint(equalTo: stackMain.bottomAnchor, constant: 8),
-        ])
     }
 }
-
-extension SignInViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == emailTextField {
-            passwordTextField.becomeFirstResponder()
-        } else if textField == passwordTextField {
-            signInBtn()
-        }
-        return true
-    }
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        self.activeTextField = textField
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        self.activeTextField = nil
-    }
-}
-
-

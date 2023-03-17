@@ -25,7 +25,7 @@ final class TabBarViewController: UITabBarController {
         chatVC.navigationItem.largeTitleDisplayMode = .automatic
         addEventsVC.navigationItem.largeTitleDisplayMode = .never
         allEventsVC.navigationItem.largeTitleDisplayMode = .automatic
-        accountVC.navigationItem.largeTitleDisplayMode = .automatic
+        accountVC.navigationItem.largeTitleDisplayMode = .never
 
         let nav1 = UINavigationController(rootViewController: homeVC)
         let nav2 = UINavigationController(rootViewController: chatVC)

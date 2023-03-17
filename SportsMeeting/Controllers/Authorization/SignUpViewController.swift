@@ -11,7 +11,6 @@ import UIKit
 class SignUpViewController: UIViewController {
     
     let scrollView = UIScrollView()
-    let contentView = UIView()
     var activeTextField : UITextField? = nil
     
     // MARK: Outlets
@@ -20,7 +19,6 @@ class SignUpViewController: UIViewController {
     private let signUpLabel: UILabel = {
         let label = UILabel()
         label.text = "SignUp"
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "Gill Sans SemiBold", size: 33)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -30,100 +28,8 @@ class SignUpViewController: UIViewController {
     private let adviceLabel: UILabel = {
         let label = UILabel()
         label.text = "Please enter your email address and enter password"
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "Gill Sans Light", size: 16)
         label.numberOfLines = 2
-        label.textAlignment = .center
-        label.textColor = .lightGray
-        return label
-    }()
-    
-    private let firstNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "First Name"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let lastNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Last Name"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let dayOfBirthLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Day Of Birth"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
-    
-    private let genderLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Gender"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let phoneNumberLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Phone Number"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let emailLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Email"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let passwordLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Password"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let confirmPassLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Confirm Password"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let loginLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Already have an account?"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans Light", size: 18)
-        label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .lightGray
         return label
@@ -133,7 +39,7 @@ class SignUpViewController: UIViewController {
     private let datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-        datePicker.contentHorizontalAlignment = .center
+        datePicker.contentHorizontalAlignment = .right
         datePicker.contentVerticalAlignment = .center
         return datePicker
     }()
@@ -146,119 +52,95 @@ class SignUpViewController: UIViewController {
         return segmentedControl
     }()
     
-    // Stack
-    private let stackMain: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 20
-        return stackView
+    // Containers
+    private lazy var firstNameContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "First Name", view: nameTextField)
+        return stack
     }()
     
-    private let stackName: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    private lazy var lastNameContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Last Name", view: lastNameTextField)
+        return stack
     }()
     
-    private let stackFirstName: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    private lazy var dobContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Day Of Birth", view: datePicker)
+        stack.axis = .horizontal
+        return stack
     }()
     
-    private let stackLastName: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    private lazy var genderContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Gender", view: segmentedControl)
+        return stack
     }()
     
-    private let stackDayOfBirth: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        stackView.layer.cornerRadius = 5
-        stackView.layer.borderWidth = 0.1
-        stackView.layer.borderColor = UIColor.black.cgColor
-        return stackView
+    private lazy var phoneNumberContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Phone Number", view: phoneTextField)
+        return stack
     }()
     
-    private let stackGender: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    private lazy var emailContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Email", view: emailTextField)
+        return stack
     }()
     
-    private let stackPhoneNum: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    private lazy var passwordContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Password", view: passwordTextField)
+        return stack
     }()
     
-    private let stackEmail: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    private lazy var confirmPassContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Confirm Password", view: confirmPassTextField)
+        return stack
     }()
     
-    private let stackPassword: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    // Text Fields
+    private lazy var nameTextField: UITextField = {
+        let textField = Utilities().textField(withPlaceholder: "First Name")
+        textField.delegate = self
+        textField.returnKeyType = .continue
+        return textField
     }()
     
-    private let stackConfirmPass: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    private lazy var lastNameTextField: UITextField = {
+        let textField = Utilities().textField(withPlaceholder: "Last Name")
+        textField.delegate = self
+        textField.returnKeyType = .continue
+        return textField
     }()
     
+    private lazy var phoneTextField: UITextField = {
+        let textField = Utilities().textField(withPlaceholder: "+380...")
+        textField.delegate = self
+        textField.returnKeyType = .continue
+        textField.keyboardType = .phonePad
+        return textField
+    }()
     
-    private let stackLogin: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 10
-        return stackView
+    private lazy var emailTextField: UITextField = {
+        let textField = Utilities().textField(withPlaceholder: "Email")
+        textField.delegate = self
+        textField.returnKeyType = .continue
+        textField.autocapitalizationType = .none
+        return textField
+    }()
+    
+    private lazy var passwordTextField: UITextField = {
+        let textField = Utilities().textField(withPlaceholder: "Password")
+        textField.delegate = self
+        textField.returnKeyType = .continue
+        textField.autocapitalizationType = .none
+        textField.isSecureTextEntry = true
+        return textField
+    }()
+    
+    private lazy var confirmPassTextField: UITextField = {
+        let textField = Utilities().textField(withPlaceholder: "Confirm Password")
+        textField.delegate = self
+        textField.returnKeyType = .done
+        textField.autocapitalizationType = .none
+        textField.isSecureTextEntry = true
+        return textField
     }()
     
     // Buttons
@@ -275,81 +157,9 @@ class SignUpViewController: UIViewController {
     }()
     
     private lazy var loginButton: UIButton = {
-        let button = UIButton()
+        let button = Utilities().attributedButton("Already have an account?", " Log In")
         button.addTarget(self, action: #selector(loginBtn), for: .touchUpInside)
-        button.setTitle("Log In", for: .normal)
-        button.setTitleColor(.link, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Gill Sans SemiBold", size: 16)
-        
         return button
-    }()
-    
-    // Text Field
-    
-    private lazy var nameTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Calvin"
-        textField.borderStyle = .roundedRect
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .continue
-        textField.backgroundColor = .secondarySystemBackground
-        return textField
-    }()
-    
-    private lazy var lastNameTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Klein"
-        textField.borderStyle = .roundedRect
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .continue
-        textField.backgroundColor = .secondarySystemBackground
-        return textField
-    }()
-    
-    private lazy var phoneTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "+380..."
-        textField.borderStyle = .roundedRect
-        textField.keyboardType = .phonePad
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .continue
-        textField.backgroundColor = .secondarySystemBackground
-        return textField
-    }()
-    
-    private lazy var emailTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Email"
-        textField.borderStyle = .roundedRect
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .continue
-        textField.backgroundColor = .secondarySystemBackground
-        return textField
-    }()
-    
-    private lazy var passwordTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Password"
-        textField.borderStyle = .roundedRect
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .continue
-        textField.backgroundColor = .secondarySystemBackground
-        textField.isSecureTextEntry = true
-        return textField
-    }()
-    
-    private lazy var confirmPassTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Confirm Password"
-        textField.borderStyle = .roundedRect
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .done
-        textField.backgroundColor = .secondarySystemBackground
-        textField.isSecureTextEntry = true
-        return textField
     }()
     
     // MARK: VC Lifecycle
@@ -357,17 +167,8 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        nameTextField.delegate = self
-        lastNameTextField.delegate = self
-        emailTextField.delegate = self
-        phoneTextField.delegate = self
-        passwordTextField.delegate = self
-        confirmPassTextField.delegate = self
-        
-        setupScrollView()
-        setupViews()
+        setupUI()
         setupKeyboard()
-        
     }
     
     // MARK: Actions
@@ -385,7 +186,7 @@ class SignUpViewController: UIViewController {
               let password = passwordTextField.text, !password.isEmpty, password.count >= 8,
               let confirmPass = confirmPassTextField.text, !confirmPass.isEmpty,
               password == confirmPass else {
-            alertError()
+            showAlert(withTitle: "Log In Error", message: "We were unable to log you in.")
             return
         }
         
@@ -410,148 +211,43 @@ class SignUpViewController: UIViewController {
                     vc.modalPresentationStyle = .overFullScreen
                     self.present(vc, animated: true)
                 } else {
-                    self.alertError()
+                    self.showAlert(withTitle: "Register Error", message: "We were unable to log you in.")
                 }
             }
         }
     }
     
-    private func alertError() {
-        let alert = UIAlertController(title: "Register Error",
-                                      message: "We were unable to log you in.",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss",
-                                      style: .cancel,
-                                      handler: nil))
-        present(alert, animated: true)
-    }
-    
-    // MARK: Setting Keyboard
-    
-    private func setupKeyboard() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundTap))
-        view.addGestureRecognizer(tapGestureRecognizer)
-        // Do any additional setup after loading the view.
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    // MARK: Setting UI
+    private func setupUI(){
+        let stackMain = UIStackView(arrangedSubviews: [signUpLabel, adviceLabel, firstNameContainer, lastNameContainer, dobContainer, segmentedControl, phoneNumberContainer, emailContainer, passwordContainer, confirmPassContainer, registerButton, loginButton])
+        stackMain.translatesAutoresizingMaskIntoConstraints = false
+        stackMain.axis = .vertical
+        stackMain.spacing = 20
         
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            // if keyboard size is not available for some reason, dont do anything
-            return
-        }
-        var shouldMoveViewUp = false
-        
-        // if active text field is not nil
-        if let activeTextField = activeTextField {
-            
-            let bottomOfTextField = activeTextField.convert(activeTextField.bounds, to: self.contentView).maxY;
-            let topOfKeyboard = self.contentView.frame.height - keyboardSize.height
-            
-            if bottomOfTextField > topOfKeyboard {
-                shouldMoveViewUp = true
-            }
-        }
-        
-        if(shouldMoveViewUp) {
-            self.contentView.frame.origin.y = 0 - keyboardSize.height
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        self.contentView.frame.origin.y = 0
-    }
-    
-    @objc func backgroundTap(_ sender: UITapGestureRecognizer) {
-        // go through all of the textfield inside the view, and end editing thus resigning first responder
-        // ie. it will trigger a keyboardWillHide notification
-        self.contentView.endEditing(true)
-    }
-    
-    // MARK: Constraints
-    
-    private func setupScrollView() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        // Hide keyboard while scrolling
         scrollView.keyboardDismissMode = .onDrag
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        scrollView.addSubview(stackMain)
         
-        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
-        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-    }
-    
-    private func setupViews(){
-        contentView.addSubview(signUpLabel)
         NSLayoutConstraint.activate([
-            signUpLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            signUpLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
-        contentView.addSubview(adviceLabel)
         NSLayoutConstraint.activate([
-            adviceLabel.topAnchor.constraint(equalTo: signUpLabel.bottomAnchor, constant: 10),
-            adviceLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            stackMain.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            stackMain.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            stackMain.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
+            stackMain.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
+            stackMain.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
         
-        contentView.addSubview(stackMain)
-        stackMain.addArrangedSubview(stackName)
-        stackMain.addArrangedSubview(stackFirstName)
-        stackMain.addArrangedSubview(stackLastName)
-        stackMain.addArrangedSubview(stackDayOfBirth)
-        stackMain.addArrangedSubview(stackGender)
-        stackMain.addArrangedSubview(stackPhoneNum)
-        stackMain.addArrangedSubview(stackEmail)
-        stackMain.addArrangedSubview(stackPassword)
-        stackMain.addArrangedSubview(stackConfirmPass)
-        stackMain.addArrangedSubview(registerButton)
-        
-        stackName.addArrangedSubview(stackFirstName)
-        stackName.addArrangedSubview(stackLastName)
-        
-        stackFirstName.addArrangedSubview(firstNameLabel)
-        stackFirstName.addArrangedSubview(nameTextField)
-        
-        stackLastName.addArrangedSubview(lastNameLabel)
-        stackLastName.addArrangedSubview(lastNameTextField)
-        
-        stackDayOfBirth.addArrangedSubview(dayOfBirthLabel)
-        stackDayOfBirth.addArrangedSubview(datePicker)
-        
-        stackGender.addArrangedSubview(genderLabel)
-        stackGender.addArrangedSubview(segmentedControl)
-        
-        stackPhoneNum.addArrangedSubview(phoneNumberLabel)
-        stackPhoneNum.addArrangedSubview(phoneTextField)
-        
-        stackEmail.addArrangedSubview(emailLabel)
-        stackEmail.addArrangedSubview(emailTextField)
-        
-        stackPassword.addArrangedSubview(passwordLabel)
-        stackPassword.addArrangedSubview(passwordTextField)
-        
-        stackConfirmPass.addArrangedSubview(confirmPassLabel)
-        stackConfirmPass.addArrangedSubview(confirmPassTextField)
-        
         NSLayoutConstraint.activate([
-            stackMain.topAnchor.constraint(equalTo: adviceLabel.bottomAnchor, constant: 25),
-            stackMain.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            stackMain.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            
             nameTextField.heightAnchor.constraint(equalToConstant: 50),
             lastNameTextField.heightAnchor.constraint(equalToConstant: 50),
-            stackDayOfBirth.heightAnchor.constraint(equalToConstant: 50),
             segmentedControl.heightAnchor.constraint(equalToConstant: 35),
             phoneTextField.heightAnchor.constraint(equalToConstant: 50),
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
@@ -559,31 +255,42 @@ class SignUpViewController: UIViewController {
             confirmPassTextField.heightAnchor.constraint(equalToConstant: 50),
             registerButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    // MARK: Setting Keyboard
+    private func setupKeyboard() {
+        hideKeyboard()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        var shouldMoveViewUp = false
         
-        contentView.addSubview(stackLogin)
-        stackLogin.addArrangedSubview(loginLabel)
-        stackLogin.addArrangedSubview(loginButton)
+        if let activeTextField = activeTextField {
+            
+            let bottomOfTextField = activeTextField.convert(activeTextField.bounds, to: self.view).maxY;
+            let topOfKeyboard = self.view.frame.height - keyboardSize.height
+            
+            if bottomOfTextField > topOfKeyboard {
+                shouldMoveViewUp = true
+            }
+        }
         
-        NSLayoutConstraint.activate([
-            stackLogin.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            stackLogin.topAnchor.constraint(equalTo: stackMain.bottomAnchor, constant: 8),
-            stackLogin.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        if(shouldMoveViewUp) {
+            self.view.frame.origin.y = 0 - keyboardSize.height
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y = 0
     }
 }
 
 extension SignUpViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == emailTextField {
-            emailTextField.becomeFirstResponder()
-        } else if textField == emailTextField {
-            passwordTextField.becomeFirstResponder()
-        } else {
-            sighUpBtn()
-        }
-        return true
-    }
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         self.activeTextField = textField
     }
@@ -592,5 +299,3 @@ extension SignUpViewController: UITextFieldDelegate {
         self.activeTextField = nil
     }
 }
-
-

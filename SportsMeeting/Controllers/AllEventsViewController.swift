@@ -36,7 +36,7 @@ class AllEventsViewController: UICollectionViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: collectionView.bounds.width - 10, height: 200)
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(EventCell.self, forCellWithReuseIdentifier: EventCell.identifier)
     }

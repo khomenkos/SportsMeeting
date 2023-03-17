@@ -9,258 +9,225 @@ import UIKit
 import Firebase
 
 class AccountViewController: UIViewController {
-    
+    let scrollView = UIScrollView()
+
     private var user: User? {
         didSet { configure() }
     }
     
     private let image: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "manImage")
-        imageView.layer.cornerRadius = 15
-        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 50
         imageView.contentMode = .scaleAspectFill
-        //imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.black.cgColor
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = UIColor(named: "darkBlue")
+        imageView.setDimensions(width: 120, height: 120)
         return imageView
     }()
-
-    private let firstNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "First Name"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
     
-    private let lastNameLabel: UILabel = {
+    // Labels
+    private let fullNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Last Name"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
+        label.font = UIFont(name: "Galvji Bold", size: 22)
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = .black
         return label
     }()
     
     private let dayOfBirthLabel: UILabel = {
         let label = UILabel()
-        label.text = "Day Of Birth"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .center
+        label.font = UIFont(name: "Galvji Bold", size: 15)
+        label.textAlignment = .right
+        label.textColor = .gray
         return label
     }()
     
     private let genderLabel: UILabel = {
         let label = UILabel()
-        label.text = "Gender"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .center
+        label.font = UIFont(name: "Galvji Bold", size: 15)
+        label.textAlignment = .right
+        label.textColor = .gray
         return label
     }()
     
-    private let phoneNumberLabel: UILabel = {
+    private let phoneLabel: UILabel = {
         let label = UILabel()
-        label.text = "Phone Number"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
-        label.numberOfLines = 0
-        label.textAlignment = .center
+        label.font = UIFont(name: "Galvji Bold", size: 15)
+        label.textAlignment = .right
+        label.textColor = .gray
         return label
+    }()
+    
+    private let emailLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "Galvji Bold", size: 15)
+        label.textAlignment = .right
+        label.textColor = .gray
+        return label
+    }()
+    
+    // MARK: Containers
+    
+    //Info Stack
+    private lazy var emailContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Email", view: emailLabel)
+        stack.axis = .horizontal
+        stack.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.backgroundColor = .white
+        stack.cornerRadius = 15
+        return stack
+    }()
+    
+    private lazy var phoneContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Phone number", view: phoneLabel)
+        stack.axis = .horizontal
+        stack.backgroundColor = .white
+        stack.cornerRadius = 15
+        stack.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
+    private lazy var genderContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Gender", view: genderLabel)
+        stack.axis = .horizontal
+        stack.backgroundColor = .white
+        stack.cornerRadius = 15
+        stack.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
+    private lazy var dobContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Day of birth", view: dayOfBirthLabel)
+        stack.axis = .horizontal
+        stack.backgroundColor = .white
+        stack.cornerRadius = 15
+        stack.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
+    //Setting Stack
+    private lazy var editProfileContainer: UIStackView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "slider.vertical.3")
+        imageView.setDimensions(width: 25, height: 40)
+        let stack = Utilities().imageContainerView(withImage: imageView, textField: editProfileButton)
+        stack.backgroundColor = .gray
+        stack.cornerRadius = 15
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
+    private lazy var helpContainer: UIStackView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "questionmark")
+        imageView.setDimensions(width: 25, height: 40)
+        let stack = Utilities().imageContainerView(withImage: imageView, textField: helpButton)
+        stack.backgroundColor = .gray
+        stack.cornerRadius = 15
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
+    private lazy var aboutAppContainer: UIStackView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "info.circle")
+        imageView.setDimensions(width: 25, height: 40)
+        let stack = Utilities().imageContainerView(withImage: imageView, textField: aboutAppButton)
+        stack.backgroundColor = .gray
+        stack.cornerRadius = 15
+        stack.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
     }()
 
-    // Title
-    
-    private let firstNameTitle: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 22)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private let lastNameTitle: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 22)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private let dayOfBirthTitle: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 22)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private let genderTitle: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 22)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private let phoneTitle: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 22)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    
-    // Stack
-    private let stackMain: UIStackView = {
+    private let infoStack: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 20
-        return stackView
-    }()
-    
-    private let stackName: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fill
         stackView.spacing = 10
-
         return stackView
     }()
     
-    private let stackFirstName: UIStackView = {
+    private let settingStack: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .white
         stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
         stackView.spacing = 10
-        stackView.layer.cornerRadius = 5
-        //stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor.black.cgColor
+        stackView.cornerRadius = 15
+        stackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
     
-    private let stackLastName: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        stackView.layer.cornerRadius = 5
-        //stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor.black.cgColor
-        return stackView
+    // Buttons
+    private lazy var logOutButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(logOutBtn), for: .touchUpInside)
+        button.setTitle("Log Out", for: .normal)
+        button.backgroundColor = UIColor(named: "darkBlue")
+        button.titleLabel?.font = UIFont(name: "Gill Sans SemiBold", size: 17)
+        button.layer.cornerRadius = 15
+        return button
     }()
     
-    private let stackDayOfBirth: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        stackView.layer.cornerRadius = 5
-        stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor.black.cgColor
-        return stackView
+    private lazy var editProfileButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(testBtn), for: .touchUpInside)
+        button.setTitle("Edit Profile", for: .normal)
+        button.titleLabel?.font = UIFont(name: "Galvji Bold", size: 17)
+        button.contentVerticalAlignment = .center
+        button.contentHorizontalAlignment = .left
+        return button
     }()
     
-    private let stackGender: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        stackView.layer.cornerRadius = 5
-        stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor.black.cgColor
-        return stackView
+    private lazy var helpButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(testBtn), for: .touchUpInside)
+        button.setTitle("Help", for: .normal)
+        button.titleLabel?.font = UIFont(name: "Galvji Bold", size: 17)
+        button.contentVerticalAlignment = .center
+        button.contentHorizontalAlignment = .left
+        return button
     }()
     
-    private let stackPhoneNum: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        stackView.layer.cornerRadius = 5
-        stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor.black.cgColor
-        return stackView
+    private lazy var aboutAppButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(testBtn), for: .touchUpInside)
+        button.setTitle("About App", for: .normal)
+        button.titleLabel?.font = UIFont(name: "Galvji Bold", size: 17)
+        button.contentVerticalAlignment = .center
+        button.contentHorizontalAlignment = .left
+        return button
     }()
     
+    // MARK: VC Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
         title = "My Account"
-        view.backgroundColor = .systemBackground
-        setupBarItem()
-        setupViews()
+        view.backgroundColor = UIColor(named: "lightGray")
+        setupUI()
         loadData()
     }
     
-    private func configure() {
-        guard let user = user else { return }
-        firstNameTitle.text = user.firstName
-        lastNameTitle.text = user.lastName
-        dayOfBirthTitle.text = user.dayOfBirth
-        genderTitle.text = user.gender
-        phoneTitle.text = user.phoneNumber
-    }
-            
-    func loadData() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            print("User not logged in")
-            return
-        }
-        
-        DatabaseManager.shared.fetchUser(uid: uid) { user in
-            self.user = user
-        }
-    }
-                
-    private func setupBarItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"),
-                                                            style: .done,
-                                                            target: self,
-                                                            action: #selector(didTapSettingsButton))
-    }
-    
-    @objc private func didTapSettingsButton() {
-        let actionSheet = UIAlertController(title: "Log Out",
-                                            message: "Are you sure you want to log out?",
-                                            preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(title: "Cancel",
-                                            style: .cancel, handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { _ in
+    // MARK: Actions
+    @objc private func logOutBtn() {
+        showConfirmationAlert(withTitle: "Log Out", message: "Are you sure you want to log out?", confirmationHandler: {
             AuthManager.shared.logOut(completion: { success in
                 DispatchQueue.main.async {
                     if success {
@@ -277,56 +244,88 @@ class AccountViewController: UIViewController {
                     }
                 }
             })
-        }))
-    
-        present(actionSheet, animated: true)
+        })
     }
     
-    private func setupViews(){
-        view.addSubview(image)
-        view.addSubview(stackMain)
-        stackMain.addArrangedSubview(stackName)
-        stackMain.addArrangedSubview(stackFirstName)
-        stackMain.addArrangedSubview(stackLastName)
-        stackMain.addArrangedSubview(stackDayOfBirth)
-        stackMain.addArrangedSubview(stackGender)
-        stackMain.addArrangedSubview(stackPhoneNum)
+    @objc private func testBtn() {
         
-        stackName.addArrangedSubview(stackFirstName)
-        stackName.addArrangedSubview(stackLastName)
+    }
+    
+    // MARK: Helpers
+    private func configure() {
+        guard let user = user else { return }
+        fullNameLabel.text = user.firstName + " " + user.lastName
+        dayOfBirthLabel.text = user.dayOfBirth
+        genderLabel.text = user.gender
+        phoneLabel.text = user.phoneNumber
+        emailLabel.text = user.email
+    }
+    
+    func loadData() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("User not logged in")
+            return
+        }
+        DatabaseManager.shared.fetchUser(uid: uid) { user in
+            self.user = user
+        }
+    }
         
-        stackFirstName.addArrangedSubview(firstNameLabel)
-        stackFirstName.addArrangedSubview(firstNameTitle)
+    // MARK: Setting UI
+    private func setupUI(){
+        let stackMain = UIStackView()
+        stackMain.translatesAutoresizingMaskIntoConstraints = false
+        stackMain.axis = .vertical
+        stackMain.spacing = 30
         
-        stackLastName.addArrangedSubview(lastNameLabel)
-        stackLastName.addArrangedSubview(lastNameTitle)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
-        stackDayOfBirth.addArrangedSubview(dayOfBirthLabel)
-        stackDayOfBirth.addArrangedSubview(dayOfBirthTitle)
-        
-        stackGender.addArrangedSubview(genderLabel)
-        stackGender.addArrangedSubview(genderTitle)
-        
-        stackPhoneNum.addArrangedSubview(phoneNumberLabel)
-        stackPhoneNum.addArrangedSubview(phoneTitle)
-        
-        
+        view.addSubview(scrollView)
+        scrollView.addSubview(image)
+        scrollView.addSubview(stackMain)
+
         NSLayoutConstraint.activate([
-            image.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25),
-            image.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        
+        stackMain.addArrangedSubview(fullNameLabel)
+        stackMain.addArrangedSubview(infoStack)
+        stackMain.addArrangedSubview(settingStack)
+        stackMain.addArrangedSubview(logOutButton)
+        
+        infoStack.addArrangedSubview(emailContainer)
+        infoStack.addArrangedSubview(phoneContainer)
+        infoStack.addArrangedSubview(genderContainer)
+        infoStack.addArrangedSubview(dobContainer)
 
-            stackMain.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 10),
-            stackMain.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            stackMain.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            //stackMain.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-
-            image.heightAnchor.constraint(equalToConstant: 100),
-            image.widthAnchor.constraint(equalToConstant: 100),
-            firstNameTitle.heightAnchor.constraint(equalToConstant: 20),
-            lastNameTitle.heightAnchor.constraint(equalToConstant: 20),
-            dayOfBirthTitle.heightAnchor.constraint(equalToConstant: 50),
-            genderTitle.heightAnchor.constraint(equalToConstant: 50),
-            phoneTitle.heightAnchor.constraint(equalToConstant: 50),
+        settingStack.addArrangedSubview(editProfileContainer)
+        settingStack.addArrangedSubview(helpContainer)
+        settingStack.addArrangedSubview(aboutAppContainer)
+                
+        NSLayoutConstraint.activate([
+            
+            image.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 25),
+            image.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            
+            stackMain.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 16),
+            stackMain.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            stackMain.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            stackMain.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
+            stackMain.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
+            
+            fullNameLabel.heightAnchor.constraint(equalToConstant: 20),
+            dayOfBirthLabel.heightAnchor.constraint(equalToConstant: 50),
+            genderLabel.heightAnchor.constraint(equalToConstant: 50),
+            phoneLabel.heightAnchor.constraint(equalToConstant: 50),
+            emailLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            editProfileContainer.heightAnchor.constraint(equalToConstant: 50),
+            helpContainer.heightAnchor.constraint(equalToConstant: 50),
+            aboutAppContainer.heightAnchor.constraint(equalToConstant: 50),
+            logOutButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 }
