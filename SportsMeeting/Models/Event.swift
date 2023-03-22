@@ -13,6 +13,7 @@ struct Event {
     var location: String
     var dateTime: String
     let sportType: String
+    var timestamp: Date!
     let user: User
     var comment: String
 
@@ -25,5 +26,9 @@ struct Event {
         self.sportType = dictionary["sportType"] as? String ?? ""
         self.comment = dictionary["comment"] as? String ?? ""
         self.dateTime = dictionary["dateTime"] as? String ?? ""
+        
+        if let timestamp = dictionary["timestamp"] as? Double {
+            self.timestamp = Date(timeIntervalSince1970: timestamp)
+        }
     }
 }

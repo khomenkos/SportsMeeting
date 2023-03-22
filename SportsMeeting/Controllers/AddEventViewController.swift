@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import MapKit
-import CoreLocation
 
 class AddEventViewController: UIViewController {
     
@@ -40,8 +38,8 @@ class AddEventViewController: UIViewController {
         return stack
     }()
     
-    private lazy var commentContainer: UIStackView = {
-        let stack = Utilities().containerView(withlabel: "Special Comment:", view: commentTextField)
+    private lazy var peopleContainer: UIStackView = {
+        let stack = Utilities().containerView(withlabel: "Number of people", view: peopleTextField)
         return stack
     }()
     
@@ -60,10 +58,11 @@ class AddEventViewController: UIViewController {
         return textField
     }()
     
-    private lazy var commentTextField: UITextField = {
-        let textField = Utilities().textField(withPlaceholder: "Enter a comment")
+    private lazy var peopleTextField: UITextField = {
+        let textField = Utilities().textField(withPlaceholder: "Enter the number of people")
         textField.delegate = self
         textField.returnKeyType = .continue
+        textField.keyboardType = .numberPad
         return textField
     }()
     
@@ -109,7 +108,7 @@ class AddEventViewController: UIViewController {
         dateFormatter.dateFormat = "dd.MM.yyyy"
         let dataTime = dateFormatter.string(from: datePicker.date)
         
-        DatabaseManager.shared.insertNewEvent(nameEvent: nameEvent, location: location, dateTime: dataTime, sportType: selectedSportType ?? sports[0], comment: commentTextField.text ?? "") { inserted in
+        DatabaseManager.shared.insertNewEvent(nameEvent: nameEvent, location: location, dateTime: dataTime, sportType: selectedSportType ?? sports[0], comment: peopleTextField.text ?? "") { inserted in
             if inserted {
                 let vc = TabBarViewController()
                 vc.modalPresentationStyle = .overFullScreen
@@ -132,7 +131,7 @@ class AddEventViewController: UIViewController {
     private func setupUI() {
         setupBarItem()
         
-        let stackView = UIStackView(arrangedSubviews: [eventContainer, locationContainer, dateContainer, sportTypeContainer, commentContainer])
+        let stackView = UIStackView(arrangedSubviews: [eventContainer, locationContainer, dateContainer, sportTypeContainer, peopleContainer])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 20
@@ -153,13 +152,12 @@ class AddEventViewController: UIViewController {
         NSLayoutConstraint.activate([
             eventTextField.heightAnchor.constraint(equalToConstant: 50),
             locationTextField.heightAnchor.constraint(equalToConstant: 50),
-            commentTextField.heightAnchor.constraint(equalToConstant: 50),
+            peopleTextField.heightAnchor.constraint(equalToConstant: 50),
             
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
     }
     

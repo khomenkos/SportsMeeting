@@ -6,7 +6,8 @@
 //
 
 import UIKit
-import Firebase
+import SDWebImage
+import FirebaseAuth
 
 class AccountViewController: UIViewController {
     let scrollView = UIScrollView()
@@ -17,10 +18,12 @@ class AccountViewController: UIViewController {
     
     private let image: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 50
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = UIColor(named: "darkBlue")
         imageView.setDimensions(width: 120, height: 120)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 4
+        imageView.layer.cornerRadius = 120 / 2
         return imageView
     }()
     
@@ -254,6 +257,7 @@ class AccountViewController: UIViewController {
     // MARK: Helpers
     private func configure() {
         guard let user = user else { return }
+        image.sd_setImage(with: user.profileImageUrl) 
         fullNameLabel.text = user.firstName + " " + user.lastName
         dayOfBirthLabel.text = user.dayOfBirth
         genderLabel.text = user.gender
@@ -304,7 +308,7 @@ class AccountViewController: UIViewController {
         settingStack.addArrangedSubview(editProfileContainer)
         settingStack.addArrangedSubview(helpContainer)
         settingStack.addArrangedSubview(aboutAppContainer)
-                
+
         NSLayoutConstraint.activate([
             
             image.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 25),
@@ -316,7 +320,7 @@ class AccountViewController: UIViewController {
             stackMain.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
             stackMain.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
             
-            fullNameLabel.heightAnchor.constraint(equalToConstant: 20),
+            fullNameLabel.heightAnchor.constraint(equalToConstant: 30),
             dayOfBirthLabel.heightAnchor.constraint(equalToConstant: 50),
             genderLabel.heightAnchor.constraint(equalToConstant: 50),
             phoneLabel.heightAnchor.constraint(equalToConstant: 50),

@@ -29,7 +29,9 @@ class Utilities {
     
     private func titleLabel(with text: String) -> UILabel {
         let label = UILabel()
+        label.textAlignment = .left
         label.text = text
+        label.numberOfLines = 2
         label.font = UIFont(name: "Gill Sans SemiBold", size: 17)
         return label
     }

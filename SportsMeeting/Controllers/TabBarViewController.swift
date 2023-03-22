@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class TabBarViewController: UITabBarController {
 
@@ -13,12 +14,12 @@ final class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         setUpTabs()
     }
-
+        
     private func setUpTabs() {
-        let homeVC = HomeViewController()
+        let homeVC = HomeViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let chatVC = ChatViewController()
         let addEventsVC = AddEventViewController()
-        let allEventsVC = AllEventsViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let allEventsVC = MyEventsViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let accountVC = AccountViewController()
 
         homeVC.navigationItem.largeTitleDisplayMode = .automatic
@@ -42,10 +43,10 @@ final class TabBarViewController: UITabBarController {
         nav3.tabBarItem = UITabBarItem(title: "Add Event",
                                        image: UIImage(systemName: "plus"),
                                        tag: 3)
-        nav4.tabBarItem = UITabBarItem(title: "All Events",
+        nav4.tabBarItem = UITabBarItem(title: "My Events",
                                        image: UIImage(systemName: "figure.run"),
                                        tag: 4)
-        nav5.tabBarItem = UITabBarItem(title: "Account",
+        nav5.tabBarItem = UITabBarItem(title: "Profile",
                                        image: UIImage(systemName: "person.circle"),
                                        tag: 4)
 

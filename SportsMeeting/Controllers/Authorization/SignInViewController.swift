@@ -161,9 +161,8 @@ class SignInViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             stackMain.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            stackMain.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            stackMain.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             stackMain.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-            stackMain.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40)
         ])
         
         NSLayoutConstraint.activate([

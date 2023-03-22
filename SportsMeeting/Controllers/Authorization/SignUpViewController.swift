@@ -7,13 +7,16 @@
 
 import UIKit
 
-
 class SignUpViewController: UIViewController {
     
     let scrollView = UIScrollView()
     var activeTextField : UITextField? = nil
     
     // MARK: Outlets
+    
+    //Image
+    private let imagePicker = UIImagePickerController()
+    private var profileImage: UIImage?
     
     //Labels
     private let signUpLabel: UILabel = {
@@ -22,6 +25,7 @@ class SignUpViewController: UIViewController {
         label.font = UIFont(name: "Gill Sans SemiBold", size: 33)
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -32,6 +36,7 @@ class SignUpViewController: UIViewController {
         label.numberOfLines = 2
         label.textAlignment = .center
         label.textColor = .lightGray
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -162,8 +167,20 @@ class SignUpViewController: UIViewController {
         return button
     }()
     
-    // MARK: VC Lifecycle
+    private lazy var plusPhotoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(addProfilePhotoBtn), for: .touchUpInside)
+        button.setDimensions(width: 128, height: 128)
+        button.layer.cornerRadius = 128 / 2
+        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.borderWidth = 3
+
+        return button
+    }()
     
+    // MARK: VC Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -172,6 +189,10 @@ class SignUpViewController: UIViewController {
     }
     
     // MARK: Actions
+    @objc func addProfilePhotoBtn() {
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
     @objc func loginBtn() {
         let loginVC = SignInViewController()
         loginVC.modalPresentationStyle = .overFullScreen
@@ -179,6 +200,11 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func sighUpBtn() {
+        guard let profileImage = profileImage else {
+            print("DEBUG: Please select a profile image...")
+            return
+        }
+        
         guard let firstName = nameTextField.text, !firstName.isEmpty,
               let lastName = lastNameTextField.text, !lastName.isEmpty,
               let phoneNumber = phoneTextField.text, !phoneNumber.isEmpty,
@@ -204,7 +230,8 @@ class SignUpViewController: UIViewController {
                                            gender: gender,
                                            phoneNumber: phoneNumber,
                                            email: email,
-                                           password: password){ registered in
+                                           password: password,
+                                           profileImage: profileImage){ registered in
             DispatchQueue.main.async {
                 if registered {
                     let vc = TabBarViewController()
@@ -219,7 +246,10 @@ class SignUpViewController: UIViewController {
     
     // MARK: Setting UI
     private func setupUI(){
-        let stackMain = UIStackView(arrangedSubviews: [signUpLabel, adviceLabel, firstNameContainer, lastNameContainer, dobContainer, segmentedControl, phoneNumberContainer, emailContainer, passwordContainer, confirmPassContainer, registerButton, loginButton])
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+
+        let stackMain = UIStackView(arrangedSubviews: [firstNameContainer, lastNameContainer, dobContainer, segmentedControl, phoneNumberContainer, emailContainer, passwordContainer, confirmPassContainer, registerButton, loginButton])
         stackMain.translatesAutoresizingMaskIntoConstraints = false
         stackMain.axis = .vertical
         stackMain.spacing = 20
@@ -228,6 +258,9 @@ class SignUpViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(scrollView)
+        scrollView.addSubview(signUpLabel)
+        scrollView.addSubview(adviceLabel)
+        scrollView.addSubview(plusPhotoButton)
         scrollView.addSubview(stackMain)
         
         NSLayoutConstraint.activate([
@@ -238,11 +271,19 @@ class SignUpViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
+            signUpLabel.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            signUpLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            adviceLabel.topAnchor.constraint(equalTo: signUpLabel.bottomAnchor, constant: 10),
+            adviceLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            plusPhotoButton.topAnchor.constraint(equalTo: adviceLabel.bottomAnchor, constant: 10),
+            plusPhotoButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
             stackMain.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            stackMain.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-            stackMain.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
+            stackMain.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            stackMain.topAnchor.constraint(equalTo: plusPhotoButton.bottomAnchor, constant: 16),
             stackMain.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
-            stackMain.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
         
         NSLayoutConstraint.activate([
@@ -297,5 +338,23 @@ extension SignUpViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.activeTextField = nil
+    }
+}
+
+extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let profileImage = info[.editedImage] as? UIImage else { return }
+        self.profileImage = profileImage
+        
+        plusPhotoButton.layer.cornerRadius = 128 / 2
+        plusPhotoButton.layer.masksToBounds = true
+        plusPhotoButton.imageView?.contentMode = .scaleAspectFill
+        plusPhotoButton.imageView?.clipsToBounds = true
+        plusPhotoButton.layer.borderColor = UIColor.black.cgColor
+        plusPhotoButton.layer.borderWidth = 3
+        
+        self.plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        dismiss(animated: true, completion: nil)
     }
 }

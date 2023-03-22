@@ -17,45 +17,71 @@ class EventCell: UICollectionViewCell {
         didSet { configure() }
     }
     
-    private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        //stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.layer.cornerRadius = 10
-        stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor.black.cgColor
-        return stackView
-    }()
+    private lazy var container: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "lightGray")
+        view.cornerRadius = 15
+        view.translatesAutoresizingMaskIntoConstraints = false
 
+        return view
+    }()
+    
+    private lazy var profileImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.backgroundColor = .black
+        iv.clipsToBounds = true
+        iv.setDimensions(width: 48, height: 48)
+        iv.layer.cornerRadius = 48 / 2
+        //let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        //iv.addGestureRecognizer(tap)
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.layer.borderWidth = 2
+        iv.layer.borderColor = UIColor.white.cgColor
+        iv.isUserInteractionEnabled = true
+        return iv
+    }()
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Gill Sans SemiBold", size: 20)
-        label.textAlignment = .center
-        label.textColor = .darkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "Galvji Bold", size: 18)
+        label.textAlignment = .left
         return label
     }()
     
-    private let locationLabel: UILabel = {
+    private lazy var descriptionContainer: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.alignment = .center
+        stack.spacing = 20
+        stack.alignment = .fill
+        stack.distribution = .fillEqually
+        return stack
+    }()
+    
+    private let sportTypeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
+        label.font = UIFont(name: "Galvji Bold", size: 15)
         label.textColor = .darkGray
+        label.textAlignment = .center
+        label.cornerRadius = 15
+        label.backgroundColor = .white
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.lightGray.cgColor
         return label
     }()
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
+        label.font = UIFont(name: "Galvji Bold", size: 15)
+        label.textAlignment = .center
         label.textColor = .darkGray
-        return label
-    }()
-    
-    private let sportTypeLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Gill Sans Light", size: 17)
-        label.textColor = .darkGray
+        label.numberOfLines = 3
+        label.cornerRadius = 15
+        label.backgroundColor = .white
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.lightGray.cgColor
         return label
     }()
     
@@ -64,51 +90,85 @@ class EventCell: UICollectionViewCell {
         label.font = UIFont(name: "Gill Sans Light", size: 15)
         label.textColor = .lightGray
         label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private lazy var locationButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = UIColor(named: "darkBlue")
+        button.setDimensions(width: 48, height: 48)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.sizeSymbol(name: "location.fill.viewfinder", size: 48, weight: .light, scale: .medium)
+
+        button.addTarget(self, action: #selector(locationBtn), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func locationBtn() {
+        
+    }
  
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
-        //addSubview(titleLabel)
-        addSubview(stackView)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(locationLabel)
-        stackView.addArrangedSubview(dateLabel)
-        stackView.addArrangedSubview(sportTypeLabel)
-        stackView.addArrangedSubview(userPublishLabel)
-//
-//        NSLayoutConstraint.activate([
-//            titleLabel.heightAnchor.constraint(equalToConstant: 45),
-//            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-//            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            
-//            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-//            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-//            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-//            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 5)
-//        ])
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowOpacity = 1
+        layer.shadowOffset = CGSize.zero
+        layer.shadowRadius = 3
+        
+        backgroundColor = .clear
+        addSubview(container)
+        
+        NSLayoutConstraint.activate([
+            container.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+        ])
+        
+        container.addSubview(profileImageView)
+        container.addSubview(locationButton)
+        container.addSubview(titleLabel)
+        container.addSubview(descriptionContainer)
+        descriptionContainer.addArrangedSubview(sportTypeLabel)
+        descriptionContainer.addArrangedSubview(dateLabel)
+        container.addSubview(userPublishLabel)
+                
+        NSLayoutConstraint.activate([
+            profileImageView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 12),
+            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: 12),
+
+            titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+            titleLabel.heightAnchor.constraint(equalToConstant: 48),
+            
+            locationButton.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 7),
+            locationButton.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 12),
+            
+            descriptionContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 7),
+            descriptionContainer.leadingAnchor.constraint(equalTo: locationButton.trailingAnchor, constant: 12),
+            descriptionContainer.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -12),
+
+            descriptionContainer.heightAnchor.constraint(equalToConstant: 48),
+
+            userPublishLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 12),
+            userPublishLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -5),
+        ])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.frame = contentView.bounds
-    }
-    
-    
     private func configure() {
         guard let event = event else { return }
         let viewModel = EventViewModel(event: event)
         
+        profileImageView.sd_setImage(with: viewModel.profileImageUrl)
         titleLabel.text = event.nameEvent
-        locationLabel.text = "Location: " + event.location
-        dateLabel.text = "Data&Time: " + event.dateTime
-        sportTypeLabel.text = "Sport Type: " + event.sportType
+        dateLabel.text = event.dateTime
+        sportTypeLabel.text = event.sportType
         userPublishLabel.attributedText = viewModel.userInfoText
     }
 }

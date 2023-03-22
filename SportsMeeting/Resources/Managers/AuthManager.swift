@@ -10,7 +10,7 @@ import FirebaseAuth
 public class AuthManager {
     
     static let shared = AuthManager()
-    
+
     // MARK: - Public
     public func registerNewUser(firstName: String,
                                 lastName: String,
@@ -19,6 +19,7 @@ public class AuthManager {
                                 phoneNumber:String,
                                 email: String,
                                 password: String,
+                                profileImage: UIImage,
                                 completion: @escaping (Bool) -> Void) {
         /*
          - Check if email is available
@@ -28,12 +29,14 @@ public class AuthManager {
                                                 dayOfBirth: dayOfBirth,
                                                 gender: gender,
                                                 phoneNumber: phoneNumber,
-                                                email: email) { canCreate in
+                                                email: email,
+                                                profileImage: profileImage) { canCreate in
             if canCreate {
                 /*
                  - Create account
                  - Insert account to database
                  */
+                
                 Auth.auth().createUser(withEmail: email, password: password) { result, error in
                     guard error == nil, result != nil else {
                         // Firebase auth could not create account
@@ -49,7 +52,8 @@ public class AuthManager {
                                                          dayOfBirth: dayOfBirth,
                                                          gender: gender,
                                                          phoneNumber: phoneNumber,
-                                                         email: email) { inserted in
+                                                         email: email,
+                                                         profileImage: profileImage) { inserted in
                         if inserted {
                             completion(true)
                             return

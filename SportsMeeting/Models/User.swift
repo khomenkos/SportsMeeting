@@ -16,8 +16,11 @@ struct User {
     var gender: String
     var phoneNumber:String
     let email: String
-    //var profileImageUrl: URL?
+    var profileImageUrl: URL?
     
+    var fullName: String {
+        firstName + " " + lastName
+    }
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
     
     init(uid: String, dictionary: [String: AnyObject]) {
@@ -30,10 +33,9 @@ struct User {
         self.email = dictionary["email"] as? String ?? ""
         self.dayOfBirth = dictionary["dayOfBirth"] as? String ?? ""
 
-        
-        //if let profileImageUrlString = dictionary["profileImageUrl"] as? String {
-            //guard let url = URL(string: profileImageUrlString) else { return }
-            //self.profileImageUrl = url
-        //}
+        if let profileImageUrlString = dictionary["profileImage"] as? String {
+            guard let url = URL(string: profileImageUrlString) else { return }
+            self.profileImageUrl = url
+        }
     }
 }
