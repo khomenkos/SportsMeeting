@@ -5,7 +5,6 @@
 //  Created by  Sasha Khomenko on 07.03.2023.
 //
 
-import Foundation
 import UIKit
 
 struct EventViewModel {
@@ -30,7 +29,6 @@ struct EventViewModel {
     var userInfoText: NSAttributedString {
         let title = NSMutableAttributedString(string: user.fullName,
                                               attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
-        
         title.append(NSAttributedString(string: " ・ \(timestamp)",
                                         attributes: [.font: UIFont.systemFont(ofSize: 14),
                                                      .foregroundColor: UIColor.lightGray]))

@@ -16,7 +16,7 @@ struct Event {
     var timestamp: Date!
     let user: User
     var comment: String
-
+    
     init(user: User, eventID: String, dictionary: [String: Any]) {
         self.eventID = eventID
         self.user = user
